@@ -53,21 +53,21 @@ namespace :svn do
   end
 
   namespace :module do
-    # Params: NAME, HOST (svn server), MODULE
+    # Params: URL (svn repos including project name), MODULE
     desc 'Prepares a module project inside a Subversion repository.'
     task :create do
       require 'escape'
-      ['NAME', 'HOST', 'MODULE'].each do |env_name|
+      ['URL', 'MODULE'].each do |env_name|
         raise "Requires #{env_name}" unless ENV[env_name]
       end
       [Escape.shell_command(["svn", "mkdir",
-            "http://#{ENV['HOST']}/#{ENV['NAME']}/#{ENV['MODULE']}", '-m', "Created top-level folder for module project '#{ENV['MODULE']}'"]),
+            "#{ENV['URL']}/#{ENV['MODULE']}", '-m', "Created top-level folder for module project '#{ENV['MODULE']}'"]),
         Escape.shell_command(["svn", "mkdir",
-            "http://#{ENV['HOST']}/#{ENV['NAME']}/#{ENV['MODULE']}/trunk", '-m', "Created trunk folder for module project '#{ENV['MODULE']}'"]),
+            "#{ENV['URL']}/#{ENV['MODULE']}/trunk", '-m', "Created trunk folder for module project '#{ENV['MODULE']}'"]),
         Escape.shell_command(["svn", "mkdir",
-            "http://#{ENV['HOST']}/#{ENV['NAME']}/#{ENV['MODULE']}/tags", '-m', "Created tags folder for module project '#{ENV['MODULE']}'"]),
+            "#{ENV['URL']}/#{ENV['MODULE']}/tags", '-m', "Created tags folder for module project '#{ENV['MODULE']}'"]),
         Escape.shell_command(["svn", "mkdir",
-            "http://#{ENV['HOST']}/#{ENV['NAME']}/#{ENV['MODULE']}/branches", '-m', "Created branches folder for module project '#{ENV['MODULE']}'"])
+            "#{ENV['URL']}/#{ENV['MODULE']}/branches", '-m', "Created branches folder for module project '#{ENV['MODULE']}'"])
       ].each do |cmd|
         $stderr.puts "Executing: #{cmd}..."
         system cmd
